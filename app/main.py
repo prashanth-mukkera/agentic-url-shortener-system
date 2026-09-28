@@ -18,6 +18,10 @@ def generate_short_code(url: str) -> str:
     hash_object = hashlib.sha256(url.encode())
     return base64.urlsafe_b64encode(hash_object.digest()).decode('utf-8')[:6]
 
+@app.get("/healthz", status_code=status.HTTP_200_OK)
+def health_check():
+    return {"status": "healthy", "service": "url-shortener-ai-ops"}
+
 @app.post("/api/v1/shorten", response_model=schemas.URLResponse, status_code=status.HTTP_201_CREATED)
 def create_short_url(payload: schemas.URLCreate, request: Request, db: Session = Depends(database.get_db)):
     long_url_str = str(payload.original_url)
@@ -80,7 +84,3 @@ def get_analytics(short_code: str, db: Session = Depends(database.get_db)):
         "total_clicks": db_url.click_count,
         "recent_clicks": recent
     }
-
-@app.get("/healthz", status_code=status.HTTP_200_OK)
-def health_check():
-    return {"status": "healthy", "service": "url-shortener-ai-ops"}
