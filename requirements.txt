@@ -1,0 +1,10 @@
+fastapi>=0.110
+uvicorn>=0.29
+sqlalchemy>=2.0
+pydantic>=2.6
+httpx>=0.27
+pytest>=8.0
+# Optional — only needed if GEMINI_API_KEY (or GOOGLE_API_KEY) is set to
+# enable live LLM calls in the reasoning agents (requirement understanding,
+# risk narrative). The system runs fully offline without it.
+google-generativeai>=0.8
